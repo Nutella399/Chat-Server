@@ -3,6 +3,7 @@ import java.io.*;
 
 class Client{
 	//has to keep track of the time as well
+public class Client{
 	
 	private Socket socket = null; 
 	
