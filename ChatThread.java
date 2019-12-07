@@ -6,6 +6,8 @@ class ChatThread implements Runnable{
 	
 	private HashMap<String, User> userMap; 
 	private PriorityQueue<Message> messageQueue;	
+	private ObjectOutputStream outToServer; 
+	private ObjectInputStream inFromServer; 
 	
 	public ChatThread() {
 		userMap = new HashMap<>(); 
@@ -18,12 +20,19 @@ class ChatThread implements Runnable{
 
 		Message message = messageQueue.poll(); 
 		for(Map.Entry<String, User> user : userMap.entrySet()) {
+	     outToServer = new ObjectOutputStream(user.getOutputStream()); 
+		 message.setMsgType(1); 
+	     message.setMsg();
+		 outToServer.writeObject(message);  
+		 inFromServer = new ObjectInputStream(((Socket) user).getInputStream());		
+		 message = (Message) inFromServer.readObject(); 
+		 System.out.println("From Client 1: " + message.getMsg());
 		  User current = user.getValue(); 
 		  System.out.print(current);
 			if(message != null) {
 				int msgType = message.getMsgType(); 
 				if(msgType == 6) {
-					current.sendMessage(3, message.getMsg()); 
+					current.sendMessage(3); 
 					if(message.getUserName() == user.getKey()) {
 						try{
 							Socket socket = current.getSocket();
@@ -34,12 +43,13 @@ class ChatThread implements Runnable{
 						}
 					}
 				}else if(msgType == 5) {
-					current.sendMessage(1, message.getMsg()); 
+					current.sendMessage(1); 
 				}else if(msgType == 4) {
-					current.sendMessage(2, message.getMsg());  
+					current.sendMessage(2);  
 				}
 			}
-		  Message newMessage = current.getMessage();  
+		  //check if they have a message to add to queue
+			Message newMessage = current.getMessage();  
 			messageQueue.add(newMessage); 	
 		}
 	}
