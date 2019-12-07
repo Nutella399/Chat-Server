@@ -12,6 +12,7 @@ public class UI implements ActionListener{
 	private Message message = new Message();
 	private Socket clientSocket = null;
 	private ObjectOutputStream outToServer = null;
+	String str;
 
 	private ObjectInputStream inFromServer = null;
 	Scanner scan = new Scanner(System.in);
@@ -84,20 +85,21 @@ public class UI implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent e) {
-    	String s = message2.getText();
+    	str = message2.getText();
         naam = name.getText();
         if(e.getSource() == send) {
-            if ((s.compareTo(exit)) == 0) {
+            if ((str.compareTo(exit)) == 0) {
                 (frame).dispose();
             } else {
-                AddChat(naam, s);
+                AddChat(naam, str);
             }
             message2.setText("");
         }
         else{
             AddUsers(naam);
             message2.setText("");
-            name.setEditable(false);
+            //name.setEditable(false);
+            run();
         }
     }
     public void run()
@@ -108,7 +110,7 @@ public class UI implements ActionListener{
 			inFromServer = new ObjectInputStream(clientSocket.getInputStream());
 			outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
 			message = (Message) inFromServer.readObject();
-			System.out.println("From server: " + message.getMsg());
+			//System.out.println("From server: " + message.getMsg());
 			if(message.getMsgType() == 1){		
 			
 	            message.setUserName(naam);
@@ -119,8 +121,7 @@ public class UI implements ActionListener{
 		   System.out.println("From server: " + message.getMsg());
 		   
            while(true){
-        	   while(scan.nextLine() != null) {
-	        	   if(scan.nextLine().compareTo(".")== 0) {
+	        	   if(str.compareTo(".")== 0) {
 	        		   message.setMsgType(3);
 	        		   message.setMsg();
 	        		   message.setMsgType(6);
@@ -146,8 +147,7 @@ public class UI implements ActionListener{
 	        	   else if(message.getMsgType() == 2)
 	        	   {
 	        		   System.out.println(message.getMsg());
-	        	   }
-        	   }	                 	   
+	        	   }                 	   
            }
 		}
 	 catch (Exception e) {
@@ -159,7 +159,7 @@ public class UI implements ActionListener{
 
     public static void main(String[] args) {
         UI userInterface = new UI();
-        userInterface.run();
+
         /*String message = "Hello";
         String user = "David";
         userInterface.AddChat(user, message);*/
