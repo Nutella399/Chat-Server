@@ -1,9 +1,5 @@
 import java.util.HashMap;
 class Message implements Comparable<Message>{
-	//has to be comparable
-	//this is compare on the message type where 
-	//leaving highest, then joining, then a string message
-	//maybe have message hold the users name as well
 	
 	//client_init = 5, client_message = 4, client_leave = 6, 
 	//server_init = 1, server_message = 2, server_leave = 3  

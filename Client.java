@@ -8,17 +8,11 @@ public class Client{
 	private Message message = new Message();
 	private Socket clientSocket = null;
 	private ObjectOutputStream outToServer = null;
-<<<<<<< HEAD
-  private ObjectInputStream inFromServer = null;
-  Scanner scan = new Scanner(System.in);
-  private HashMap<String, User> users;
-=======
 
 	private ObjectInputStream inFromServer = null;
 	Scanner scan = new Scanner(System.in);
 	private HashMap<String, User> users;
 
->>>>>>> d6f290a7550b677dc4b08cd4428a6e27f399cc62
 	
 	private Socket socket = null; 
 	
@@ -26,34 +20,26 @@ public class Client{
 	}
 	
 	
-	public static void main(String[] args) throws IOException
-    {
+	public static void main(String[] args) throws IOException{
     	Client client = new Client(); 
-<<<<<<< HEAD
     	client.connect();
-    }
-	 
-=======
     }
 
    
->>>>>>> d6f290a7550b677dc4b08cd4428a6e27f399cc62
 	public void connect(){
 		try {
 			clientSocket = new Socket("127.0.0.1", 5000);
 			inFromServer = new ObjectInputStream(clientSocket.getInputStream());
 			message = (Message) inFromServer.readObject();
 			System.out.println("From server: " + message.getMsg());
-			if(message.getMsgType() == 1)
-			{
+			if(message.getMsgType() == 1){
 				outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
-	            System.out.println(message.users.toString());
+	            //System.out.println(message.users.toString());
 	            message.setMsgType(2);
 
 	            outToServer.writeObject(message);
 			}	
-           while(true)
-           {
+           while(true){
         	   message = (Message) inFromServer.readObject();
         	   System.out.println(users.toString());
         	   System.out.println("From server: " + message.getMsg());

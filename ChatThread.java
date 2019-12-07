@@ -20,19 +20,12 @@ class ChatThread implements Runnable{
 
 		Message message = messageQueue.poll(); 
 		for(Map.Entry<String, User> user : userMap.entrySet()) {
-	     outToServer = new ObjectOutputStream(user.getOutputStream()); 
-		 message.setMsgType(1); 
-	     message.setMsg();
-		 outToServer.writeObject(message);  
-		 inFromServer = new ObjectInputStream(((Socket) user).getInputStream());		
-		 message = (Message) inFromServer.readObject(); 
-		 System.out.println("From Client 1: " + message.getMsg());
 		  User current = user.getValue(); 
 		  System.out.print(current);
 			if(message != null) {
 				int msgType = message.getMsgType(); 
 				if(msgType == 6) {
-					current.sendMessage(3); 
+					current.sendMessage(3, message.getMsg()); 
 					if(message.getUserName() == user.getKey()) {
 						try{
 							Socket socket = current.getSocket();
@@ -43,24 +36,24 @@ class ChatThread implements Runnable{
 						}
 					}
 				}else if(msgType == 5) {
-					current.sendMessage(1); 
+					current.sendMessage(1, message.getMsg()); 
 				}else if(msgType == 4) {
-					current.sendMessage(2);  
+					current.sendMessage(2, message.getMsg());  
 				}
 			}
-		  //check if they have a message to add to queue
-			Message newMessage = current.getMessage();  
+		  Message newMessage = current.getMessage();  
 			messageQueue.add(newMessage); 	
 		}
 	}
 	
 	public void add(Socket newSocket) {
+		System.out.println("Came here"); 
 		User newUser = new User(newSocket); 
-		newUser.sendMessage(2);
-		Message message = newUser.getMessage();  
+		newUser.sendMessage(1);
+		Message message = newUser.getMessage();
+		System.out.println("Came here 2");   
 		String name = message.getUserName(); 
 		userMap.put(name, newUser);  
 		messageQueue.add(message); 
 	}
-	
 }
