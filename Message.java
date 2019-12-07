@@ -3,9 +3,9 @@ class Message implements Comparable<Message>{
 	//has to be comparable
 	//this is compare on the message type where 
 	//leaving highest, then joining, then a string message
-	
 	//maybe have message hold the users name as well
 	
+	private HashMap<String, Node> users;
 	//client_init = 5, client_message = 4, client_leave = 6, 
 	//server_init = 1, server_message = 2, server_leave = 3  
 	private HashMap<String, User> users;
@@ -31,22 +31,13 @@ class Message implements Comparable<Message>{
 	public void setMsg() {
 		switch(msgType){
 			case 1:
-				msg = ; 
-				break;
-			case 2:
-				msg = ; 
-				break;
-			case 3:
-				msg = ;
-				break;
-			case 4:
-			 	msg = ;
+				msg = "What is your username?"; 
 				break;
 			case 5:
-				msg = ;
+				msg = userName + ": has joined the server";
 				break;
 			case 6:
-				msg = ;
+				msg = userName + ": is leaving the server";
 				break;		    
 		}
 	}
@@ -57,8 +48,8 @@ class Message implements Comparable<Message>{
 	
 	public void setMsgType(int type) {
 		this.msgType = type; 
-	}
-		
+	}	
+			
 	public String getUserName() {
 		return userName; 
 	}

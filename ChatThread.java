@@ -24,7 +24,7 @@ class ChatThread implements Runnable{
 		 message.setMsgType(1); 
 	     message.setMsg();
 		 outToServer.writeObject(message);  
-		 inFromServer = new ObjectInputStream(user.getInputStream());		
+		 inFromServer = new ObjectInputStream(((Socket) user).getInputStream());		
 		 message = (Message) inFromServer.readObject(); 
 		 System.out.println("From Client 1: " + message.getMsg());
 		  User current = user.getValue(); 
