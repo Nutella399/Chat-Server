@@ -11,10 +11,9 @@ public class Client{
 
 	private ObjectInputStream inFromServer = null;
 	Scanner scan = new Scanner(System.in);
-	private HashMap<String, User> users;
-
-	
-	private Socket socket = null; 
+	UI ui;
+	//private HashMap<String, User> users;
+	//private Socket socket = null; 
 	
 	public Client() {	
 	}
@@ -45,10 +44,9 @@ public class Client{
 		   
            while(true){
         	   while(scan.nextLine() != null) {
-	        	   if(scan.nextLine().equals(".")) {
+	        	   if(scan.nextLine().compareTo(".")== 0) {
 	        		   message.setMsgType(3);
 	        		   message.setMsg();
-	        		   //System.out.println("From server: " + message.getMsg());
 	        		   message.setMsgType(6);
 	        		   message.setMsg();
 	        		   System.out.println("From server: " + message.getMsg());

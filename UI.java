@@ -1,12 +1,22 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.time.LocalTime;
+import java.util.Scanner;
 
 public class UI implements ActionListener{
+	
+	private Message message = new Message();
+	private Socket clientSocket = null;
+	private ObjectOutputStream outToServer = null;
 
+	private ObjectInputStream inFromServer = null;
+	Scanner scan = new Scanner(System.in);
     JLabel enter, chatroom, title;
-    JTextField message;
+    JTextField message2;
     JButton send;
     JFrame frame;
     DefaultListModel<String> users = new DefaultListModel<>();
@@ -40,8 +50,8 @@ public class UI implements ActionListener{
         enter.setFont(new Font("Monospaced", Font.BOLD, 14));
         enter.setForeground(Color.white);
         enter.setBounds(225,500, 150,30);
-        message=new JTextField();
-        message.setBounds(350,500, 500,30);
+        message2=new JTextField();
+        message2.setBounds(350,500, 500,30);
         send=new JButton("Send");
         send.setBounds(860,500,70,30);
         send.addActionListener(this);
@@ -53,7 +63,7 @@ public class UI implements ActionListener{
         frame.add(title);
         frame.add(chatroom);
         frame.add(enter);
-        frame.add(message);
+        frame.add(message2);
         frame.add(send);
         frame.setSize(1200,600);
         frame.setLayout(null);
@@ -61,15 +71,71 @@ public class UI implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent e) {
-        String s = message.getText();
+        String s = message2.getText();
         if((s.compareTo(exit)) == 0){
             (frame).dispose();
         }
         else{
             AddChat("User", s);
         }
-        message.setText("");
+        message2.setText("");
     }
+    public void run()
+
+	{
+		try {
+			clientSocket = new Socket("127.0.0.1", 5000);
+			inFromServer = new ObjectInputStream(clientSocket.getInputStream());
+			outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
+			message = (Message) inFromServer.readObject();
+			System.out.println("From server: " + message.getMsg());
+			if(message.getMsgType() == 1){		
+			
+	            message.setUserName(message2.getText());
+	            message.setMsgType(5);
+	            message.setMsg();
+	            outToServer.writeObject(message);
+			}	
+		   System.out.println("From server: " + message.getMsg());
+		   
+           while(true){
+        	   while(scan.nextLine() != null) {
+	        	   if(scan.nextLine().compareTo(".")== 0) {
+	        		   message.setMsgType(3);
+	        		   message.setMsg();
+	        		   message.setMsgType(6);
+	        		   message.setMsg();
+	        		   System.out.println("From server: " + message.getMsg());
+	        		   break;
+	        	   }
+	        	   else if(message.getMsgType() == 3 || message.getMsgType() == 0)
+	        	   {
+	        		   message.setMsgType(6);
+	        		   message.setMsg();
+	        		   System.out.println("From server: " + message.getMsg());
+	        		   break;
+	        	   }
+	        	   else if(message.getMsgType() == 4)
+	        	   {
+	        		   String newMessage = scan.nextLine();
+	        		   message.setMsg(newMessage);
+	        		   System.out.println(message.getMsg());
+	        		   message.setMsgType(2);
+	        		   message.setMsg();
+	        	   }
+	        	   else if(message.getMsgType() == 2)
+	        	   {
+	        		   System.out.println(message.getMsg());
+	        	   }
+        	   }	                 	   
+           }
+		}
+	 catch (Exception e) {
+		e.printStackTrace();
+	}
+		
+
+	}
 
     public static void main(String[] args) {
         UI userInterface = new UI();
