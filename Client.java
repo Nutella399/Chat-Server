@@ -41,17 +41,25 @@ public class Client{
 	            message.setMsg();
 	            outToServer.writeObject(message);
 			}	
+		   System.out.println("From server: " + message.getMsg());
+		   
            while(true){
-        	   
         	   while(scan.nextLine() != null) {
-        	   
-	        	   if(scan.nextLine().equals('.')) {
+	        	   if(scan.nextLine().equals(".")) {
 	        		   message.setMsgType(3);
+	        		   message.setMsg();
+	        		   //System.out.println("From server: " + message.getMsg());
+	        		   message.setMsgType(6);
+	        		   message.setMsg();
+	        		   System.out.println("From server: " + message.getMsg());
+	        		   break;
 	        	   }
 	        	   else if(message.getMsgType() == 4)
 	        	   {
 	        		   String newMessage = scan.nextLine();
-	        		   outToServer.writeObject(newMessage);
+	        		   message.setMsg(newMessage);
+	        		   System.out.println(newMessage);
+	        		   //outToServer.writeObject(newMessage);
 	        		   message.setMsgType(2);
 	        		   message.setMsg();
 	        	   }
@@ -59,17 +67,7 @@ public class Client{
 	        	   {
 	        		   System.out.println("From server: " + message.getMsg());
 	        	   }
-	        	   else if(message.getMsgType() == 3)
-	        	   {
-	        		   System.out.println("From server: " + message.getMsg());
-	        		   message.setMsgType(6);
-	        		   message.setMsg();
-	        		   break;
-	        	   }
-        	   }	
-               //message.setMsgType(4);
-        	   //message.setMsg();
-               //outToServer.writeObject(message);                     	   
+        	   }	                 	   
            }
        		
 		} catch (Exception e) {
