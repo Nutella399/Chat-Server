@@ -40,18 +40,18 @@ class User{
 	}
 	
 	public Message getMessage() {
+		Message newMessage = new Message(); 
 		try{
-		
 			Object o = inFromClient.readObject();
 			if(o != null) {
-				 message = (Message) o; 
+				newMessage = (Message) o; 
 			}else {
 				System.out.println("There is no message for this user"); 
 			}
 		}catch(Exception e) {
 			System.out.println(e.getMessage());	
 		}
-		return message; 
+		return newMessage; 
 	}
 	
 	public Socket getSocket() {
