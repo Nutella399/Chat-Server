@@ -1,8 +1,7 @@
-<<<<<<< HEAD
+//<<<<<<< HEAD
 import java.net.*; 
 import java.io.*; 
 
-class Server{
 
 public class Server{
 	public Server() {
