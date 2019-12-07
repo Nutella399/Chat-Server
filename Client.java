@@ -11,10 +11,9 @@ public class Client{
 
 	private ObjectInputStream inFromServer = null;
 	Scanner scan = new Scanner(System.in);
-	private HashMap<String, User> users;
-
-	
-	private Socket socket = null; 
+	UI ui;
+	//private HashMap<String, User> users;
+	//private Socket socket = null; 
 	
 	public Client() {	
 	}
@@ -41,35 +40,38 @@ public class Client{
 	            message.setMsg();
 	            outToServer.writeObject(message);
 			}	
+		   System.out.println("From server: " + message.getMsg());
+		   
            while(true){
-        	   
         	   while(scan.nextLine() != null) {
-        	   
-	        	   if(scan.nextLine().equals('.')) {
+	        	   if(scan.nextLine().compareTo(".")== 0) {
 	        		   message.setMsgType(3);
+	        		   message.setMsg();
+	        		   message.setMsgType(6);
+	        		   message.setMsg();
+	        		   System.out.println("From server: " + message.getMsg());
+	        		   break;
+	        	   }
+	        	   else if(message.getMsgType() == 3 || message.getMsgType() == 0)
+	        	   {
+	        		   message.setMsgType(6);
+	        		   message.setMsg();
+	        		   System.out.println("From server: " + message.getMsg());
+	        		   break;
 	        	   }
 	        	   else if(message.getMsgType() == 4)
 	        	   {
 	        		   String newMessage = scan.nextLine();
-	        		   outToServer.writeObject(newMessage);
+	        		   message.setMsg(newMessage);
+	        		   System.out.println(message.getMsg());
 	        		   message.setMsgType(2);
 	        		   message.setMsg();
 	        	   }
 	        	   else if(message.getMsgType() == 2)
 	        	   {
-	        		   System.out.println("From server: " + message.getMsg());
+	        		   System.out.println(message.getMsg());
 	        	   }
-	        	   else if(message.getMsgType() == 3)
-	        	   {
-	        		   System.out.println("From server: " + message.getMsg());
-	        		   message.setMsgType(6);
-	        		   message.setMsg();
-	        		   break;
-	        	   }
-        	   }	
-               //message.setMsgType(4);
-        	   //message.setMsg();
-               //outToServer.writeObject(message);                     	   
+        	   }	                 	   
            }
        		
 		} catch (Exception e) {
