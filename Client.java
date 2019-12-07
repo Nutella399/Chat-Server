@@ -11,6 +11,9 @@ public class Client{
     private ObjectInputStream inFromServer = null;
     Scanner scan = new Scanner(System.in);
     private HashMap<String, Node> users;
+  private ObjectInputStream inFromServer = null;
+  Scanner scan = new Scanner(System.in);
+  private HashMap<String, User> users;
 	
 	private Socket socket = null; 
 	
@@ -24,6 +27,11 @@ public class Client{
     }
 	public void connect()
 	{
+    	client.connect();
+    	
+   }
+   
+	public void connect(){
 		try {
 			clientSocket = new Socket("127.0.0.1", 5000);
 			inFromServer = new ObjectInputStream(clientSocket.getInputStream());

@@ -14,9 +14,12 @@ class ChatThread implements Runnable{
 	
 	@Override	
 	public void run() {
+		System.out.println("Running....");
+
 		Message message = messageQueue.poll(); 
 		for(Map.Entry<String, User> user : userMap.entrySet()) {
 		  User current = user.getValue(); 
+		  System.out.print(current);
 			if(message != null) {
 				int msgType = message.getMsgType(); 
 				if(msgType == 6) {
