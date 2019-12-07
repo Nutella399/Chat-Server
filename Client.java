@@ -54,18 +54,24 @@ public class Client{
 	        		   System.out.println("From server: " + message.getMsg());
 	        		   break;
 	        	   }
+	        	   else if(message.getMsgType() == 3 || message.getMsgType() == 0)
+	        	   {
+	        		   message.setMsgType(6);
+	        		   message.setMsg();
+	        		   System.out.println("From server: " + message.getMsg());
+	        		   break;
+	        	   }
 	        	   else if(message.getMsgType() == 4)
 	        	   {
 	        		   String newMessage = scan.nextLine();
 	        		   message.setMsg(newMessage);
-	        		   System.out.println(newMessage);
-	        		   //outToServer.writeObject(newMessage);
+	        		   System.out.println(message.getMsg());
 	        		   message.setMsgType(2);
 	        		   message.setMsg();
 	        	   }
 	        	   else if(message.getMsgType() == 2)
 	        	   {
-	        		   System.out.println("From server: " + message.getMsg());
+	        		   System.out.println(message.getMsg());
 	        	   }
         	   }	                 	   
            }
