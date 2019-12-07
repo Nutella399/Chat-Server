@@ -8,9 +8,6 @@ public class Client{
 	private Message message = new Message();
 	private Socket clientSocket = null;
 	private ObjectOutputStream outToServer = null;
-    private ObjectInputStream inFromServer = null;
-    Scanner scan = new Scanner(System.in);
-    private HashMap<String, Node> users;
   private ObjectInputStream inFromServer = null;
   Scanner scan = new Scanner(System.in);
   private HashMap<String, User> users;
@@ -24,13 +21,9 @@ public class Client{
 	public static void main(String[] args) throws IOException
     {
     	Client client = new Client(); 
-    }
-	public void connect()
-	{
     	client.connect();
-    	
-   }
-   
+    }
+	 
 	public void connect(){
 		try {
 			clientSocket = new Socket("127.0.0.1", 5000);

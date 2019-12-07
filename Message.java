@@ -5,7 +5,6 @@ class Message implements Comparable<Message>{
 	//leaving highest, then joining, then a string message
 	//maybe have message hold the users name as well
 	
-	private HashMap<String, Node> users;
 	//client_init = 5, client_message = 4, client_leave = 6, 
 	//server_init = 1, server_message = 2, server_leave = 3  
 	private HashMap<String, User> users;
