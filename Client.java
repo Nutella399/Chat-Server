@@ -42,11 +42,18 @@ public class Client{
 	            outToServer.writeObject(message);
 			}	
            while(true){
-        	   message = (Message) inFromServer.readObject();
-        	   outToServer.writeObject(message);
+        	   //message = (Message) inFromServer.readObject();
+        	   //outToServer.writeObject(message);
+        	   String newMessage = scan.nextLine();
+        	   if(scan.nextLine() != null) {
+        		   message.setMsgType(4);
+        	   }
+        	   if(scan.nextLine().equals('.')) {
+        		   message.setMsgType(3);
+        	   }
         	   if(message.getMsgType() == 4)
         	   {
-        		   String newMessage = scan.nextLine();
+        		   //String newMessage = scan.nextLine();
         		   outToServer.writeObject(newMessage);
         		   message.setMsgType(2);
         		   message.setMsg();
