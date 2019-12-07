@@ -6,6 +6,8 @@ class ChatThread implements Runnable{
 	
 	private HashMap<String, User> userMap; 
 	private PriorityQueue<Message> messageQueue;	
+	private ObjectOutputStream outToServer; 
+	private ObjectInputStream inFromServer; 
 	
 	public ChatThread() {
 		userMap = new HashMap<>(); 
@@ -18,6 +20,13 @@ class ChatThread implements Runnable{
 
 		Message message = messageQueue.poll(); 
 		for(Map.Entry<String, User> user : userMap.entrySet()) {
+	     outToServer = new ObjectOutputStream(user.getOutputStream()); 
+		 message.setMsgType(1); 
+	     message.setMsg();
+		 outToServer.writeObject(message);  
+		 inFromServer = new ObjectInputStream(user.getInputStream());		
+		 message = (Message) inFromServer.readObject(); 
+		 System.out.println("From Client 1: " + message.getMsg());
 		  User current = user.getValue(); 
 		  System.out.print(current);
 			if(message != null) {

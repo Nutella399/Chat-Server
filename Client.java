@@ -9,9 +9,9 @@ public class Client{
 	private Message message = new Message();
 	private Socket clientSocket = null;
 	private ObjectOutputStream outToServer = null;
-  private ObjectInputStream inFromServer = null;
-  Scanner scan = new Scanner(System.in);
-  private HashMap<String, User> users;
+	private ObjectInputStream inFromServer = null;
+	Scanner scan = new Scanner(System.in);
+	private HashMap<String, User> users;
 	
 	private Socket socket = null; 
 	
@@ -33,7 +33,7 @@ public class Client{
 			System.out.println("From server: " + message.getMsg());
 			if(message.getMsgType() == 1){
 				outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
-	            System.out.println(users.toString());
+	            System.out.println(message.users.toString());
 	            message.setMsgType(2);
 	            outToServer.writeObject(message);
 			}	
