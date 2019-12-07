@@ -44,6 +44,7 @@ class User{
 		try{
 			Object o = inFromClient.readObject();
 			if(o != null) {
+				
 				newMessage = (Message) o; 
 			}else {
 				System.out.println("There is no message for this user"); 

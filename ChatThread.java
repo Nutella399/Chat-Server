@@ -10,8 +10,6 @@ class ChatThread implements Runnable{
 	private Iterator<Entry<String, User>> iterator; 
 	private Iterator<Entry<String, User>> addingIterator; 
 	private PriorityQueue<Message> messageQueue;	
-	private ObjectOutputStream outToServer; 
-	private ObjectInputStream inFromServer; 
 	private boolean adding;
 	private int msgType;  
 	
@@ -35,9 +33,11 @@ class ChatThread implements Runnable{
 				Map.Entry<String, User> next = (Map.Entry<String, User>) iterator.next(); 
 				User current = userMap.get(next.getKey()); 
 			  if(polledMessage != null) {
+			  	if(polledMessage.getMsg() != null) {
 					System.out.println("From Client: '" + polledMessage.getMsg() + "'"); 
 					msgType = polledMessage.getMsgType(); 
 					System.out.println("type: " + msgType); 	
+					}
 					if(msgType == 6) {
 						if(polledMessage.getUserName() == next.getKey()) {
 							try{
@@ -58,8 +58,10 @@ class ChatThread implements Runnable{
 						current.sendMessage(2, polledMessage.getMsg());  
 					}
 				}
-		  	//Message newMessage = current.getMessage();  
-				//messageQueue.add(newMessage); 	
+				Message newMessage = current.getMessage(); 
+				if(newMessage.getMsgType() != -2) {
+					messageQueue.add(newMessage); 	
+				} 
 			}
 			if(adding == true && msgType == 5) {
 				addingIterator = needAdded.entrySet().iterator(); 
@@ -67,10 +69,10 @@ class ChatThread implements Runnable{
 					Map.Entry<String, User> nextAdded = (Map.Entry<String, User>) addingIterator.next(); 
 					userMap.put(nextAdded.getKey(), nextAdded.getValue());
 					System.out.println("user added " + nextAdded.getKey());
+					needAdded.remove(nextAdded.getKey()); 
 				}
 				adding = false; 
 			}
-			
 		}
 	}
 	
