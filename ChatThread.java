@@ -20,7 +20,7 @@ class ChatThread implements Runnable{
 			if(message != null) {
 				int msgType = message.getMsgType(); 
 				if(msgType == 6) {
-					current.sendMessage(3); 
+					current.sendMessage(3, message.getMsg()); 
 					if(message.getUserName() == user.getKey()) {
 						try{
 							Socket socket = current.getSocket();
@@ -31,13 +31,12 @@ class ChatThread implements Runnable{
 						}
 					}
 				}else if(msgType == 5) {
-					current.sendMessage(1); 
+					current.sendMessage(1, message.getMsg()); 
 				}else if(msgType == 4) {
-					current.sendMessage(2);  
+					current.sendMessage(2, message.getMsg());  
 				}
 			}
-		  //check if they have a message to add to queue
-			Message newMessage = current.getMessage();  
+		  Message newMessage = current.getMessage();  
 			messageQueue.add(newMessage); 	
 		}
 	}

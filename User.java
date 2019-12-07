@@ -41,7 +41,12 @@ class User{
 	
 	public Message getMessage() {
 		try{
-			message = (Message) inFromClient.readObject(); 
+			Object o = inFromClient.readObject();
+			if(o != null) {
+				 message = (Message) o; 
+			}else {
+				System.out.println("There is no message for this user"); 
+			}
 		}catch(Exception e) {
 			System.out.println(e.getMessage());	
 		}
