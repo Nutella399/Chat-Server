@@ -42,33 +42,31 @@ public class Client{
 	            outToServer.writeObject(message);
 			}	
            while(true){
-        	   //message = (Message) inFromServer.readObject();
-        	   //outToServer.writeObject(message);
-        	   String newMessage = scan.nextLine();
-        	   if(scan.nextLine() != null) {
-        		   message.setMsgType(4);
-        	   }
-        	   if(scan.nextLine().equals('.')) {
-        		   message.setMsgType(3);
-        	   }
-        	   if(message.getMsgType() == 4)
-        	   {
-        		   //String newMessage = scan.nextLine();
-        		   outToServer.writeObject(newMessage);
-        		   message.setMsgType(2);
-        		   message.setMsg();
-        	   }
-        	   else if(message.getMsgType() == 2)
-        	   {
-        		   System.out.println("From server: " + message.getMsg());
-        	   }
-        	   else if(message.getMsgType() == 3)
-        	   {
-        		   System.out.println("From server: " + message.getMsg());
-        		   message.setMsgType(6);
-        		   message.setMsg();
-        		   break;
-        	   }
+        	   
+        	   while(scan.nextLine() != null) {
+        	   
+	        	   if(scan.nextLine().equals('.')) {
+	        		   message.setMsgType(3);
+	        	   }
+	        	   else if(message.getMsgType() == 4)
+	        	   {
+	        		   String newMessage = scan.nextLine();
+	        		   outToServer.writeObject(newMessage);
+	        		   message.setMsgType(2);
+	        		   message.setMsg();
+	        	   }
+	        	   else if(message.getMsgType() == 2)
+	        	   {
+	        		   System.out.println("From server: " + message.getMsg());
+	        	   }
+	        	   else if(message.getMsgType() == 3)
+	        	   {
+	        		   System.out.println("From server: " + message.getMsg());
+	        		   message.setMsgType(6);
+	        		   message.setMsg();
+	        		   break;
+	        	   }
+        	   }	
                //message.setMsgType(4);
         	   //message.setMsg();
                //outToServer.writeObject(message);                     	   
