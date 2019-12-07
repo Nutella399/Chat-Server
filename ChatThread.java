@@ -4,60 +4,51 @@ import java.util.*;
 
 class ChatThread implements Runnable{
 	
-	private HashMap<String, Node> users; 
+	private HashMap<String, User> userMap; 
 	private PriorityQueue<Message> messageQueue;	
-	private ObjectOutputStream outToClient; 
-	private ObjectInputStream inFromClient;  
 	
 	public ChatThread() {
-		users = new HashMap<>(); 
+		userMap = new HashMap<>(); 
 		messageQueue = new PriorityQueue<>();
 	}
 	
 	@Override	
 	public void run() {
 		Message message = messageQueue.poll(); 
-		for(Map.Entry<String, Node> user : users.entrySet()) {
-		 	Node current = users.get(user); 
-		 /*
+		for(Map.Entry<String, User> user : userMap.entrySet()) {
+		  User current = user.getValue(); 
 			if(message != null) {
-				if(message.msgtype=leave) {
-					send back message that says the person left to everyone
-					if(from this user) {
-						Socket socket = current.getSocket();
-						socket.close(); 
-						users.remove(user); 
+				int msgType = message.getMsgType(); 
+				if(msgType == 6) {
+					current.sendMessage(3); 
+					if(message.getUserName() == user.getKey()) {
+						try{
+							Socket socket = current.getSocket();
+							socket.close(); 
+							userMap.remove(user); 
+						}catch(IOException e) {
+							System.out.println(e);
+						}
 					}
-				}else if(message.msgtype=string) {
-					send message to everyone 
-				}else if(message.msgtype=join) {
-					Send back message that says the person joined to everyone 
-				} 
+				}else if(msgType == 5) {
+					current.sendMessage(1); 
+				}else if(msgType == 4) {
+					current.sendMessage(2);  
+				}
 			}
-		  check if they have a message to add to queue
-			
-		*/
+		  //check if they have a message to add to queue
+			Message newMessage = current.getMessage();  
+			messageQueue.add(newMessage); 	
 		}
 	}
 	
 	public void add(Socket newSocket) {
-		Node newUser = new Node(newSocket); 
-		Message message = newUser.getMessage();
-		/*
-		outToClient = newUser.getOutToClient();  
-		inFromClient = newUser.getInFromClient();  
-		//set messsage type to send the message to the user asking for name 
-		//set message 
-		try{
-			outToClient.writeObject(message); 
-			message = (Message) inFromClient.readObject(); 
-		}catch(Exception e) {
-			
-		}
-		//get the user name from message and set it to a variable 
-		//users.put(name, newUser);  
-		//adds message that person joined to messageQueue to let everyone know 
-		*/
+		User newUser = new User(newSocket); 
+		newUser.sendMessage(2);
+		Message message = newUser.getMessage();  
+		String name = message.getUserName(); 
+		userMap.put(name, newUser);  
+		messageQueue.add(message); 
 	}
 	
 }
