@@ -23,17 +23,20 @@ class ChatThread implements Runnable{
 		  User current = user.getValue(); 
 		  System.out.print(current);
 			if(message != null) {
+				System.out.println("From Client" + message.getMsg()); 
 				int msgType = message.getMsgType(); 
 				if(msgType == 6) {
-					current.sendMessage(3, message.getMsg()); 
 					if(message.getUserName() == user.getKey()) {
 						try{
+								current.sendMessage(0, message.getMsg()); 
 							Socket socket = current.getSocket();
 							socket.close(); 
 							userMap.remove(user); 
 						}catch(IOException e) {
 							System.out.println(e);
 						}
+					}else {
+						current.sendMessage(3, message.getMsg()); 
 					}
 				}else if(msgType == 5) {
 					current.sendMessage(1, message.getMsg()); 
@@ -51,7 +54,8 @@ class ChatThread implements Runnable{
 		newUser.sendMessage(1);
 		Message message = newUser.getMessage();
 		String name = message.getUserName(); 
-		userMap.put(name, newUser);  
+		userMap.put(name, newUser);
+		System.out.println("got here" + name);   
 		messageQueue.add(message); 
 	}
 }
