@@ -12,12 +12,14 @@ public class UI implements ActionListener{
 	private Message message = new Message();
 	private Socket clientSocket = null;
 	private ObjectOutputStream outToServer = null;
+	String str;
 
 	private ObjectInputStream inFromServer = null;
 	Scanner scan = new Scanner(System.in);
-    JLabel enter, chatroom, title;
-    JTextField message2;
-    JButton send;
+    JLabel enter, chatroom, title, username;
+    JTextField message2, name;
+    String naam;
+    JButton send, enter_name;
     JFrame frame;
     DefaultListModel<String> users = new DefaultListModel<>();
     JList<String> list = new JList<>(users);
@@ -40,7 +42,7 @@ public class UI implements ActionListener{
     }
 
     public UI(){
-        frame = new JFrame("Echo to Everyone");
+    	frame = new JFrame("Echo to Everyone");
         frame.getContentPane().setBackground(Color.darkGray);
         title=new JLabel("Echo To Everyone");
         title.setFont(new Font("Monospaced", Font.BOLD|Font.ITALIC,30));
@@ -49,16 +51,28 @@ public class UI implements ActionListener{
         enter=new JLabel("Enter Message:");
         enter.setFont(new Font("Monospaced", Font.BOLD, 14));
         enter.setForeground(Color.white);
-        enter.setBounds(225,500, 150,30);
+        enter.setBounds(465,500, 150,30);
+        username=new JLabel("Enter Username:");
+        username.setFont(new Font("Monospaced", Font.BOLD, 14));
+        username.setForeground(Color.white);
+        username.setBounds(10,500, 150,30);
         message2=new JTextField();
-        message2.setBounds(350,500, 500,30);
+        message2.setBounds(590,500, 500,30);
+        name=new JTextField();
+        name.setBounds(150,500, 150,30);
         send=new JButton("Send");
-        send.setBounds(860,500,70,30);
+        send.setBounds(1100,500,70,30);
         send.addActionListener(this);
+        enter_name =new JButton("Enter");
+        enter_name.setBounds(310,500,70,30);
+        enter_name.addActionListener(this);
         chatroom=new JLabel("Chatroom:");
         chatroom.setFont(new Font("Monospaced", Font.BOLD, 14));
         chatroom.setForeground(Color.white);
         chatroom.setBounds(10,130, 100,30);
+        frame.add(enter_name);
+        frame.add(name);
+        frame.add(username);
         frame.add(list2);
         frame.add(title);
         frame.add(chatroom);
@@ -71,14 +85,22 @@ public class UI implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent e) {
-        String s = message2.getText();
-        if((s.compareTo(exit)) == 0){
-            (frame).dispose();
+    	str = message2.getText();
+        naam = name.getText();
+        if(e.getSource() == send) {
+            if ((str.compareTo(exit)) == 0) {
+                (frame).dispose();
+            } else {
+                AddChat(naam, str);
+            }
+            message2.setText("");
         }
         else{
-            AddChat("User", s);
+            AddUsers(naam);
+            message2.setText("");
+            //name.setEditable(false);
+            run();
         }
-        message2.setText("");
     }
     public void run()
 
@@ -88,10 +110,10 @@ public class UI implements ActionListener{
 			inFromServer = new ObjectInputStream(clientSocket.getInputStream());
 			outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
 			message = (Message) inFromServer.readObject();
-			System.out.println("From server: " + message.getMsg());
+			//System.out.println("From server: " + message.getMsg());
 			if(message.getMsgType() == 1){		
 			
-	            message.setUserName(message2.getText());
+	            message.setUserName(naam);
 	            message.setMsgType(5);
 	            message.setMsg();
 	            outToServer.writeObject(message);
@@ -99,8 +121,7 @@ public class UI implements ActionListener{
 		   System.out.println("From server: " + message.getMsg());
 		   
            while(true){
-        	   while(scan.nextLine() != null) {
-	        	   if(scan.nextLine().compareTo(".")== 0) {
+	        	   if(str.compareTo(".")== 0) {
 	        		   message.setMsgType(3);
 	        		   message.setMsg();
 	        		   message.setMsgType(6);
@@ -126,8 +147,7 @@ public class UI implements ActionListener{
 	        	   else if(message.getMsgType() == 2)
 	        	   {
 	        		   System.out.println(message.getMsg());
-	        	   }
-        	   }	                 	   
+	        	   }                 	   
            }
 		}
 	 catch (Exception e) {
@@ -139,12 +159,9 @@ public class UI implements ActionListener{
 
     public static void main(String[] args) {
         UI userInterface = new UI();
-        String u = "Korah";
-        String v = "Dr.Husain";
-        userInterface.AddUsers(u);
-        userInterface.AddUsers(v);
-        String message = "Hello";
+
+        /*String message = "Hello";
         String user = "David";
-        userInterface.AddChat(user, message);
+        userInterface.AddChat(user, message);*/
     }
 }
