@@ -1,3 +1,4 @@
+import java.util.HashMap;
 class Message implements Comparable<Message>{
 	//has to be comparable
 	//this is compare on the message type where 
@@ -7,6 +8,7 @@ class Message implements Comparable<Message>{
 	
 	//client_init = 5, client_message = 4, client_leave = 6, 
 	//server_init = 1, server_message = 2, server_leave = 3  
+	private HashMap<String, Node> users;
 	private int msgType; 
 	private String msg; 
 	private String userName; 
@@ -55,8 +57,8 @@ class Message implements Comparable<Message>{
 	
 	public void setMsgType(int type) {
 		this.msgType = type; 
-	}
-	
+
+		
 	public String getUserName() {
 		return userName; 
 	}
@@ -70,4 +72,4 @@ class Message implements Comparable<Message>{
 	public int compareTo(Message other){
 		return other.msgType - this.msgType;  
 	}
-}
+} 
