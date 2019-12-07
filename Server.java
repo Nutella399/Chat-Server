@@ -11,9 +11,7 @@ public class Server{
 		ChatThread chat = new ChatThread(); 
 		Thread thread = new Thread(chat); 
 		thread.start(); 
-		System.out.println("Came here"); 
 		while(true) {
-			System.out.println("here"); 
 			Socket user = server.accept(); 
 			chat.add(user);
 		}

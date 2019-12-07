@@ -30,10 +30,11 @@ public class Client{
 		try {
 			clientSocket = new Socket("127.0.0.1", 5000);
 			inFromServer = new ObjectInputStream(clientSocket.getInputStream());
+			outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
 			message = (Message) inFromServer.readObject();
 			System.out.println("From server: " + message.getMsg());
 			if(message.getMsgType() == 1){
-				outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
+				
 	            //System.out.println(message.users.toString());
 	            message.setMsgType(2);
 

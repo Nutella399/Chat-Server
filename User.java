@@ -13,7 +13,7 @@ class User{
 		message = new Message(); 
 		try{
 			outToClient = new ObjectOutputStream(socket.getOutputStream());  
-			inFromClient = new ObjectInputStream(socket.getInputStream());  
+			inFromClient = new ObjectInputStream(socket.getInputStream());
 		}catch(IOException e) {
 			System.out.println(e.getMessage());
 		}	
@@ -41,6 +41,7 @@ class User{
 	
 	public Message getMessage() {
 		try{
+		
 			Object o = inFromClient.readObject();
 			if(o != null) {
 				 message = (Message) o; 

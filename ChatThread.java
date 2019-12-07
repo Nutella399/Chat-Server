@@ -47,11 +47,9 @@ class ChatThread implements Runnable{
 	}
 	
 	public void add(Socket newSocket) {
-		System.out.println("Came here"); 
 		User newUser = new User(newSocket); 
 		newUser.sendMessage(1);
 		Message message = newUser.getMessage();
-		System.out.println("Came here 2");   
 		String name = message.getUserName(); 
 		userMap.put(name, newUser);  
 		messageQueue.add(message); 
