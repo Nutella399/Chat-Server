@@ -12,7 +12,7 @@ public class UI implements ActionListener{
 	private Message message = new Message();
 	private Socket clientSocket = null;
 	private ObjectOutputStream outToServer = null;
-	String str;
+	String str ="";
 
 	private ObjectInputStream inFromServer = null;
 	Scanner scan = new Scanner(System.in);
@@ -92,15 +92,39 @@ public class UI implements ActionListener{
                 (frame).dispose();
             } else {
                 AddChat(naam, str);
+                run();
             }
             message2.setText("");
+ 
         }
         else{
             AddUsers(naam);
             message2.setText("");
             //name.setEditable(false);
-            run();
+           getUserName();
         }
+    }
+    public void getUserName()
+    {
+    	try {
+    	clientSocket = new Socket("127.0.0.1", 5000);
+		inFromServer = new ObjectInputStream(clientSocket.getInputStream());
+		outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
+		message = (Message) inFromServer.readObject();
+		//System.out.println("From server: " + message.getMsg());
+		if(message.getMsgType() == 1){		
+		
+            message.setUserName(naam);
+            message.setMsgType(5);
+            message.setMsg();
+            outToServer.writeObject(message);
+		}	
+	   System.out.println("From server: " + message.getMsg());
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	
     }
     public void run()
 
@@ -109,23 +133,16 @@ public class UI implements ActionListener{
 			clientSocket = new Socket("127.0.0.1", 5000);
 			inFromServer = new ObjectInputStream(clientSocket.getInputStream());
 			outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
-			message = (Message) inFromServer.readObject();
-			//System.out.println("From server: " + message.getMsg());
-			if(message.getMsgType() == 1){		
-			
-	            message.setUserName(naam);
-	            message.setMsgType(5);
-	            message.setMsg();
-	            outToServer.writeObject(message);
-			}	
-		   System.out.println("From server: " + message.getMsg());
-		   
-           while(true){
+			message = (Message) inFromServer.readObject();		   
+			while(true){
+				while(str != null) {
 	        	   if(str.compareTo(".")== 0) {
 	        		   message.setMsgType(3);
 	        		   message.setMsg();
+	        		   outToServer.writeObject(message);
 	        		   message.setMsgType(6);
 	        		   message.setMsg();
+	        		   outToServer.writeObject(message);
 	        		   System.out.println("From server: " + message.getMsg());
 	        		   break;
 	        	   }
@@ -133,21 +150,23 @@ public class UI implements ActionListener{
 	        	   {
 	        		   message.setMsgType(6);
 	        		   message.setMsg();
+	        		   outToServer.writeObject(message);
 	        		   System.out.println("From server: " + message.getMsg());
 	        		   break;
 	        	   }
 	        	   else if(message.getMsgType() == 4)
 	        	   {
-	        		   String newMessage = scan.nextLine();
-	        		   message.setMsg(newMessage);
+	        		   message.setMsg(str);
 	        		   System.out.println(message.getMsg());
 	        		   message.setMsgType(2);
 	        		   message.setMsg();
+	        		   outToServer.writeObject(message);
 	        	   }
 	        	   else if(message.getMsgType() == 2)
 	        	   {
 	        		   System.out.println(message.getMsg());
-	        	   }                 	   
+	        	   }   
+				}
            }
 		}
 	 catch (Exception e) {
