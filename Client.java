@@ -33,27 +33,41 @@ public class Client{
 			outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
 			message = (Message) inFromServer.readObject();
 			System.out.println("From server: " + message.getMsg());
-			if(message.getMsgType() == 1){
+			if(message.getMsgType() == 1){		
 				
-	            //System.out.println(message.users.toString());
-	            message.setMsgType(2);
-
+	            String name = scan.nextLine();
+	            message.setUserName(name);
+	            message.setMsgType(5);
+	            message.setMsg();
 	            outToServer.writeObject(message);
 			}	
            while(true){
         	   message = (Message) inFromServer.readObject();
-        	   System.out.println(users.toString());
-        	   System.out.println("From server: " + message.getMsg());
-        	   if(message.getMsgType() != 3) {
+        	   outToServer.writeObject(message);
+        	   if(message.getMsgType() == 4)
+        	   {
+        		   String newMessage = scan.nextLine();
+        		   outToServer.writeObject(newMessage);
+        		   message.setMsgType(2);
+        		   message.setMsg();
+        	   }
+        	   else if(message.getMsgType() == 2)
+        	   {
+        		   System.out.println("From server: " + message.getMsg());
+        	   }
+        	   else if(message.getMsgType() == 3)
+        	   {
+        		   System.out.println("From server: " + message.getMsg());
+        		   message.setMsgType(6);
+        		   message.setMsg();
         		   break;
         	   }
-               message.setMsgType(4);
-        	   message.setMsg();
-               outToServer.writeObject(message);                     	   
+               //message.setMsgType(4);
+        	   //message.setMsg();
+               //outToServer.writeObject(message);                     	   
            }
        		
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
