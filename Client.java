@@ -11,7 +11,7 @@ public class Client{
 	private ObjectOutputStream outToServer = null;
   private ObjectInputStream inFromServer = null;
   Scanner scan = new Scanner(System.in);
-  private HashMap<String, Node> users;
+  private HashMap<String, User> users;
 	
 	private Socket socket = null; 
 	
