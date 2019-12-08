@@ -33,11 +33,9 @@ class ChatThread implements Runnable{
 				Map.Entry<String, User> next = (Map.Entry<String, User>) iterator.next(); 
 				User current = userMap.get(next.getKey()); 
 			  if(polledMessage != null) {
-			  	if(polledMessage.getMsg() != null) {
-					System.out.println("From Client: '" + polledMessage.getMsg() + "'"); 
+			  	System.out.println("From Client: '" + polledMessage.getMsg() + "'"); 
 					msgType = polledMessage.getMsgType(); 
 					System.out.println("type: " + msgType); 	
-					}
 					if(msgType == 6) {
 						if(polledMessage.getUserName() == next.getKey()) {
 							try{
@@ -50,19 +48,20 @@ class ChatThread implements Runnable{
 							}
 						}else {
 							current.sendMessage(3, polledMessage.getMsg()); 
+							System.out.println("To Client: " + polledMessage.getMsg()); 
 						}
 					}else if(msgType == 5) {
 						current.sendMessage(2, polledMessage.getMsg()); 
-						System.out.println("sent the message"); 
+						System.out.println("To Client: " + polledMessage.getMsg()); 
 					}else if(msgType == 4) {
 						current.sendMessage(2, polledMessage.getMsg());  
-						System.out.println("sent the message 2"); 
+						System.out.println("To Client: " + polledMessage.getMsg()); 
 					}
 				}
 				Message newMessage = current.getMessage(); 
 				if(newMessage.getMsgType() != -2) {
 					messageQueue.add(newMessage); 	
-					System.out.println("message added"); 
+					System.out.println("message added: " + newMessage.getMsg());
 				} 
 			}
 			if(adding == true && msgType == 5) {
@@ -87,6 +86,7 @@ class ChatThread implements Runnable{
 		needAdded.put(name, newUser); 
 		messageQueue.add(message); 
 		msgType = 5;  
-		System.out.println("message added " + messageQueue.peek().getMsg());
+		System.out.println("message added: " + messageQueue.peek().getMsg());
+		System.out.println("queue size:  " + messageQueue.size());
 	}
 }

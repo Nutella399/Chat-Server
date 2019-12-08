@@ -139,9 +139,11 @@ public class UI implements ActionListener {
 	}
 
 	public void run() throws IOException, ClassNotFoundException {
+		outToServer.reset(); 
 		if (str != null) {
 			message.setMsgType(4);
-		} else if (message.getMsgType() == 2) {
+		}
+		if (message.getMsgType() == 2) {
 			System.out.println(message.getMsg());
 			outToServer.writeObject(message);
 		} else if (message.getMsgType() == 3 || message.getMsgType() == 0) {
