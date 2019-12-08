@@ -29,6 +29,7 @@ class ChatThread implements Runnable{
 		while(true){
 			Message polledMessage = messageQueue.poll();
 			iterator = userMap.entrySet().iterator(); 
+			 
 			while(iterator.hasNext()) {
 				Map.Entry<String, User> next = (Map.Entry<String, User>) iterator.next(); 
 				User current = userMap.get(next.getKey()); 
@@ -49,20 +50,39 @@ class ChatThread implements Runnable{
 						}else {
 							current.sendMessage(3, polledMessage.getMsg()); 
 							System.out.println("To Client: " + polledMessage.getMsg()); 
+							System.out.println("type: 3"); 		
 						}
 					}else if(msgType == 5) {
 						current.sendMessage(2, polledMessage.getMsg()); 
-						System.out.println("To Client: " + polledMessage.getMsg()); 
+						System.out.println("To Client: " + polledMessage.getMsg());
+						System.out.println("type: 2"); 	 
 					}else if(msgType == 4) {
 						current.sendMessage(2, polledMessage.getMsg());  
-						System.out.println("To Client: " + polledMessage.getMsg()); 
+						System.out.println("To Client: " + polledMessage.getMsg());
+						System.out.println("type: 2"); 	 
 					}
 				}
-				Message newMessage = current.getMessage(); 
+				
+				if(current.getMessageReady()) {
+					System.out.println("here");
+					Message newMessage = current.getMessage();
+					if(newMessage.getMsgType() != -2) {
+						messageQueue.add(newMessage); 	
+						System.out.println("message added: " + newMessage.getMsg());
+					}else {
+						System.out.println("From Client: confirmation"); 
+					}
+				}
+				
+				/*Message newMessage = current.getMessage(); 
 				if(newMessage.getMsgType() != -2) {
 					messageQueue.add(newMessage); 	
 					System.out.println("message added: " + newMessage.getMsg());
-				} 
+				}else {
+					System.out.println("From Client: confirmation"); 
+				} */
+				
+				 
 			}
 			if(adding == true && msgType == 5) {
 				addingIterator = needAdded.entrySet().iterator(); 
@@ -78,9 +98,10 @@ class ChatThread implements Runnable{
 	}
 	
 	public void add(Socket newSocket) {
-		User newUser = new User(newSocket); 
+		User newUser = new User(newSocket);
+		
 		newUser.sendMessage(1);
-		Message message = newUser.getMessage();
+		Message message = newUser.getMessage(1);
 		adding = true; 
 		String name = message.getUserName(); 
 		needAdded.put(name, newUser); 
@@ -88,5 +109,9 @@ class ChatThread implements Runnable{
 		msgType = 5;  
 		System.out.println("message added: " + messageQueue.peek().getMsg());
 		System.out.println("queue size:  " + messageQueue.size());
+		Thread thread = new Thread(newUser); 
+		thread.start();  
+		System.out.println(name + ": thread starts");
+		
 	}
 }

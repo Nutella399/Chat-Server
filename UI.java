@@ -40,7 +40,7 @@ public class UI implements ActionListener {
 	public void AddChat(String user, String message) {
 		t = LocalTime.now();
 		time = t.toString();
-		chat.addElement(time.substring(0, 5) + "      " + user + ":  " + message);
+		//chat.addElement(time.substring(0, 5) + "      " + user + ":  " + message);
 		list2.setBounds(150, 75, 1000, 400);
 	}
 
@@ -153,16 +153,17 @@ public class UI implements ActionListener {
 	public void printMsg() throws ClassNotFoundException, IOException {
 		message = (Message) inFromServer.readObject();
 		if (message.getMsgType() == 2) {
-			chat.addElement(time.substring(0, 5) + "      " + message.getUserName() + ":  " + message.getMsg());
-			outToServer.writeObject(message);
-			message.setMsgType(-2);
-			message.setMsg();
+			chat.addElement(time.substring(0, 5) + "      " + message.getUserName() + ":  " + 				message.getMsg());
+			//outToServer.reset(); 
+			//message.setMsgType(-2);
+			//message.setMsg();
+			//outToServer.writeObject(message);
 		}
 	}
 
 	public void run() throws IOException, ClassNotFoundException {
 		outToServer.reset();
-		message = (Message) inFromServer.readObject();
+		//message = (Message) inFromServer.readObject();
 		if (str != null) {
 			message.setMsg(str);
 			message.setMsgType(4);
