@@ -20,7 +20,7 @@ public class UI implements ActionListener, Runnable {
 	JLabel enter, chatroom, title, username;
 	JTextField message2, name;
 	String naam;
-	JButton send, enter_name;
+	JButton send, enter_name,refresh;
 	JFrame frame;
 	DefaultListModel<String> users = new DefaultListModel<>();
 	JList<String> list = new JList<>(users);
@@ -85,6 +85,10 @@ public class UI implements ActionListener, Runnable {
 		frame.setSize(1200, 600);
 		frame.setLayout(null);
 		frame.setVisible(true);
+		refresh = new JButton("Refresh");
+		refresh.setBounds(10, 10, 90, 30);
+		refresh.addActionListener(this);
+		frame.add(refresh);
 		try {
 			clientSocket = new Socket("127.0.0.1", 5000);
 			inFromServer = new ObjectInputStream(clientSocket.getInputStream());
@@ -124,13 +128,24 @@ public class UI implements ActionListener, Runnable {
 			}
 			message2.setText("");
 
-		} else {
+		} else if(e.getSource() == refresh)	{
+			try {
+				printMsg();
+			} catch (ClassNotFoundException e1) {
+				 //TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				 //TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}else {
 			AddUsers(naam);
 			AddChat(naam, str);
 			message2.setText("");
 			// name.setEditable(false);
 			try {
 				getUserName();
+				printMsg();
 				printMsg(); 
 			} catch (ClassNotFoundException | IOException e1) {
 				// TODO Auto-generated catch block
@@ -197,8 +212,8 @@ public class UI implements ActionListener, Runnable {
 
 	public static void main(String[] args) {
 		UI userInterface = new UI();
-		Thread thread = new Thread(userInterface);
-		thread.start();
+		//Thread thread = new Thread(userInterface);
+		//thread.start();
 
 		/*
 		 * String message = "Hello"; String user = "David"; userInterface.AddChat(user,
