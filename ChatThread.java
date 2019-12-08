@@ -49,16 +49,16 @@ class ChatThread implements Runnable{
 							}
 						}else {
 							current.sendMessage(3, polledMessage.getMsg()); 
-							System.out.println("To Client: " + polledMessage.getMsg()); 
+							System.out.println("To Client: " + polledMessage.getUserName() + polledMessage.getMsg()); 
 							System.out.println("type: 3"); 		
 						}
 					}else if(msgType == 5) {
 						current.sendMessage(2, polledMessage.getMsg()); 
-						System.out.println("To Client: " + polledMessage.getMsg());
+						System.out.println("To Client: " + polledMessage.getUserName() + polledMessage.getMsg());
 						System.out.println("type: 2"); 	 
 					}else if(msgType == 4) {
 						current.sendMessage(2, polledMessage.getMsg());  
-						System.out.println("To Client: " + polledMessage.getMsg());
+						System.out.println("To Client: " + polledMessage.getUserName() + polledMessage.getMsg());
 						System.out.println("type: 2"); 	 
 					}
 				}
@@ -103,7 +103,9 @@ class ChatThread implements Runnable{
 		newUser.sendMessage(1);
 		Message message = newUser.getMessage(1);
 		adding = true; 
+		newUser.sendMessage(2, "Welcome to the Chat");  
 		String name = message.getUserName(); 
+		newUser.setUserName(name); 
 		needAdded.put(name, newUser); 
 		messageQueue.add(message); 
 		msgType = 5;  

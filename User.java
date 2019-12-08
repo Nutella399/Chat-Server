@@ -9,6 +9,7 @@ class User implements Runnable{
 	private Message message;  
 	private Message newMessage;   
 	private boolean messageReady; 
+	private String userName; 
 	
 	public User(Socket socket) {
 		this.socket = socket; 
@@ -35,7 +36,7 @@ class User implements Runnable{
 	
 	public void sendMessage(int msgType, String userMessage) {
 		message.setMsgType(msgType);
-		message.setMsg(userMessage); 
+		message.forwardMsg(userMessage); 
 		try{
 			outToClient.reset(); 
 			outToClient.writeObject(message); 
@@ -81,6 +82,10 @@ class User implements Runnable{
 			System.out.println(e.getMessage());	
 		}
 		return false; 
+	}
+	
+	public void setUserName(String userName) {
+		this.userName = userName; 
 	}
 	
 	public Socket getSocket() {

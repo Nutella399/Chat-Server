@@ -21,9 +21,14 @@ class Message implements Comparable<Message>, Serializable{
 		return msg; 
 	}
 	
+	public void forwardMsg(String message) {
+		this.msg = message; 
+	}
+	
 	//this string should be coming to this object with the user name and time already added
 	public void setMsg(String message) {
-		this.msg = message; 
+		this.msg = userName +": " + message; 
+		//this.msg = message; 
 	}
 	
 	public void setMsg() {
@@ -36,7 +41,9 @@ class Message implements Comparable<Message>, Serializable{
 				break;
 			case 6:
 				msg = userName + ": is leaving the server";
-				break;		    
+				break;	
+			default: 
+				break; 	    
 		}
 	}
 	
@@ -49,7 +56,7 @@ class Message implements Comparable<Message>, Serializable{
 	}	
 			
 	public String getUserName() {
-		return userName; 
+		return this.userName; 
 	}
 	
 	public void setUserName(String name) {

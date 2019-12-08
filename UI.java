@@ -154,8 +154,9 @@ public class UI implements ActionListener {
 
 	public void printMsg() throws ClassNotFoundException, IOException {
 		message = (Message) inFromServer.readObject();
+		
 		if (message.getMsgType() == 2) {
-			chat.addElement(time.substring(0, 5) + "      " + message.getUserName() + ":  " + 				message.getMsg() + "yikes");
+			chat.addElement(time.substring(0, 5) + "      " + message.getMsg());
 			//outToServer.reset(); 
 			//message.setMsgType(-2);
 			//message.setMsg();
@@ -167,9 +168,9 @@ public class UI implements ActionListener {
 		outToServer.reset();
 		//message = (Message) inFromServer.readObject();
 		if (str != null) {
+			message.setUserName(naam); 
 			message.setMsg(str);
 			message.setMsgType(4);
-			message.setMsg();
 			outToServer.writeObject(message);
 			// message.setMsgType(2);
 			// message.setMsg();
