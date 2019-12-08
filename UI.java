@@ -136,6 +136,8 @@ public class UI implements ActionListener{
 			message = (Message) inFromServer.readObject();		   
 			while(true){
 				while(str != null) {
+				   //message = (Message) inFromServer.readObject();
+				   message.setMsgType(4);
 	        	   if(str.compareTo(".")== 0) {
 	        		   message.setMsgType(3);
 	        		   message.setMsg();
@@ -156,8 +158,7 @@ public class UI implements ActionListener{
 	        	   }
 	        	   else if(message.getMsgType() == 4)
 	        	   {
-	        		   message.setMsg(str);
-	        		   System.out.println(message.getMsg());
+	        		   chat.addElement(naam + ":  " + str);
 	        		   message.setMsgType(2);
 	        		   message.setMsg();
 	        		   outToServer.writeObject(message);
