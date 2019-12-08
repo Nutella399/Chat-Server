@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -82,6 +83,16 @@ public class UI implements ActionListener{
         frame.setSize(1200,600);
         frame.setLayout(null);
         frame.setVisible(true);
+        try {
+			clientSocket = new Socket("127.0.0.1", 5000);
+			inFromServer = new ObjectInputStream(clientSocket.getInputStream());
+			outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
+			message = (Message) inFromServer.readObject();
+        }
+        catch (Exception e) {
+    		e.printStackTrace();
+    	}
+        
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -92,7 +103,12 @@ public class UI implements ActionListener{
                 (frame).dispose();
             } else {
                 AddChat(naam, str);
-                run();
+                try {
+					run();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
             message2.setText("");
  
@@ -101,17 +117,17 @@ public class UI implements ActionListener{
             AddUsers(naam);
             message2.setText("");
             //name.setEditable(false);
-           getUserName();
+           try {
+			getUserName();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         }
     }
-    public void getUserName()
+    public void getUserName() throws IOException
     {
-    	try {
-    	clientSocket = new Socket("127.0.0.1", 5000);
-		inFromServer = new ObjectInputStream(clientSocket.getInputStream());
-		outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
-		message = (Message) inFromServer.readObject();
-		//System.out.println("From server: " + message.getMsg());
+ 
 		if(message.getMsgType() == 1){		
 		
             message.setUserName(naam);
@@ -120,22 +136,12 @@ public class UI implements ActionListener{
             outToServer.writeObject(message);
 		}	
 	   System.out.println("From server: " + message.getMsg());
-    	}
-    	catch (Exception e) {
-    		e.printStackTrace();
-    	}
+  
     	
     }
-    public void run()
-
+    public void run() throws IOException
 	{
-		try {
-			clientSocket = new Socket("127.0.0.1", 5000);
-			inFromServer = new ObjectInputStream(clientSocket.getInputStream());
-			outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
-			message = (Message) inFromServer.readObject();		   
-			while(true){
-				while(str != null) {
+    	while(str != null) {
 				   //message = (Message) inFromServer.readObject();
 				   message.setMsgType(4);
 	        	   if(str.compareTo(".")== 0) {
@@ -158,7 +164,7 @@ public class UI implements ActionListener{
 	        	   }
 	        	   else if(message.getMsgType() == 4)
 	        	   {
-	        		   chat.addElement(naam + ":  " + str);
+	        		  chat.addElement(naam + ":  " + str);
 	        		   message.setMsgType(2);
 	        		   message.setMsg();
 	        		   outToServer.writeObject(message);
@@ -168,14 +174,8 @@ public class UI implements ActionListener{
 	        		   System.out.println(message.getMsg());
 	        	   }   
 				}
-           }
-		}
-	 catch (Exception e) {
-		e.printStackTrace();
 	}
 		
-
-	}
 
     public static void main(String[] args) {
         UI userInterface = new UI();
