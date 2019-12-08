@@ -33,6 +33,7 @@ class User{
 		message.setMsgType(msgType);
 		message.setMsg(userMessage); 
 		try{
+			outToClient.flush(); 
 			outToClient.writeObject(message); 
 		}catch(Exception e) {
 			System.out.println(e.getMessage());	

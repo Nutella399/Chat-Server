@@ -52,15 +52,17 @@ class ChatThread implements Runnable{
 							current.sendMessage(3, polledMessage.getMsg()); 
 						}
 					}else if(msgType == 5) {
-						current.sendMessage(1, polledMessage.getMsg()); 
+						current.sendMessage(2, polledMessage.getMsg()); 
 						System.out.println("sent the message"); 
 					}else if(msgType == 4) {
 						current.sendMessage(2, polledMessage.getMsg());  
+						System.out.println("sent the message 2"); 
 					}
 				}
 				Message newMessage = current.getMessage(); 
 				if(newMessage.getMsgType() != -2) {
 					messageQueue.add(newMessage); 	
+					System.out.println("message added"); 
 				} 
 			}
 			if(adding == true && msgType == 5) {
