@@ -156,7 +156,7 @@ public class UI implements ActionListener {
 		if (message.getMsgType() == 2) {
 			System.out.println(message.getMsg());
 			outToServer.writeObject(message);
-			message.setMsgType(4);
+			message.setMsgType(-2);
 			message.setMsg();
 		} else if (message.getMsgType() == 3 || message.getMsgType() == 0) {
 			message.setMsgType(6);
