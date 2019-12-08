@@ -42,8 +42,9 @@ class ChatThread implements Runnable{
 							try{
 								current.sendMessage(0, polledMessage.getMsg()); 
 								Socket socket = current.getSocket();
-								socket.close(); 
 								userMap.remove(next.getKey()); 
+								socket.close();
+								break; 
 							}catch(IOException e) {
 								System.out.println(e);
 							}
