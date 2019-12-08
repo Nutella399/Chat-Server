@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.time.LocalTime;
 import java.util.Scanner;
 
-public class UI implements ActionListener {
+public class UI implements ActionListener, Runnable {
 
 	private Message message = new Message();
 	private Socket clientSocket = null;
@@ -114,7 +114,7 @@ public class UI implements ActionListener {
 			} else {
 				AddChat(naam, str);
 				try {
-					run();
+					messagePrinter();
 					printMsg();
 				} catch (ClassNotFoundException | IOException e1) {
 					// TODO Auto-generated catch block
@@ -164,7 +164,7 @@ public class UI implements ActionListener {
 		}
 	}
 
-	public void run() throws IOException, ClassNotFoundException {
+	public void messagePrinter() throws IOException, ClassNotFoundException {
 		outToServer.reset();
 		//message = (Message) inFromServer.readObject();
 		if (str != null) {
@@ -178,13 +178,33 @@ public class UI implements ActionListener {
 
 		}
 	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		while(true)
+		{
+		     try {
+				printMsg();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public static void main(String[] args) {
 		UI userInterface = new UI();
+		Thread thread = new Thread(userInterface);
+		thread.start();
 
 		/*
 		 * String message = "Hello"; String user = "David"; userInterface.AddChat(user,
 		 * message);
 		 */
 	}
+
+	
 }
