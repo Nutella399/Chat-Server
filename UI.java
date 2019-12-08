@@ -154,7 +154,7 @@ public class UI implements ActionListener {
 		} else if (message.getMsgType() == 4) {
 			chat.addElement(naam + ":  " + str);
 			message.setMsgType(2);
-			message.setMsg();
+			message.setMsg(str);
 			outToServer.writeObject(message);
 		}
 	}
