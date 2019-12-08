@@ -100,6 +100,8 @@ public class UI implements ActionListener {
 		if (e.getSource() == send) {
 			if ((str.compareTo(exit)) == 0) {
 				(frame).dispose();
+				message.setMsgType(3);
+				message.setMsg();
 			} else {
 				AddChat(naam, str);
 				try {
@@ -140,6 +142,7 @@ public class UI implements ActionListener {
 
 	public void run() throws IOException, ClassNotFoundException {
 		outToServer.reset(); 
+		message = (Message) inFromServer.readObject();
 		if (str != null) {
 			message.setMsg(str);
 			message.setMsgType(4);
@@ -153,6 +156,8 @@ public class UI implements ActionListener {
 		if (message.getMsgType() == 2) {
 			System.out.println(message.getMsg());
 			outToServer.writeObject(message);
+			message.setMsgType(4);
+			message.setMsg();
 		} else if (message.getMsgType() == 3 || message.getMsgType() == 0) {
 			message.setMsgType(6);
 			message.setMsg();
