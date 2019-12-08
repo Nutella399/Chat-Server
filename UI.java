@@ -126,11 +126,13 @@ public class UI implements ActionListener {
 
 		} else {
 			AddUsers(naam);
+			AddChat(naam, str);
 			message2.setText("");
 			// name.setEditable(false);
 			try {
 				getUserName();
-			} catch (IOException e1) {
+				printMsg(); 
+			} catch (ClassNotFoundException | IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
@@ -153,7 +155,7 @@ public class UI implements ActionListener {
 	public void printMsg() throws ClassNotFoundException, IOException {
 		message = (Message) inFromServer.readObject();
 		if (message.getMsgType() == 2) {
-			chat.addElement(time.substring(0, 5) + "      " + message.getUserName() + ":  " + 				message.getMsg());
+			chat.addElement(time.substring(0, 5) + "      " + message.getUserName() + ":  " + 				message.getMsg() + "yikes");
 			//outToServer.reset(); 
 			//message.setMsgType(-2);
 			//message.setMsg();
