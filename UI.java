@@ -27,6 +27,8 @@ public class UI implements ActionListener {
 	DefaultListModel<String> chat = new DefaultListModel<>();
 	JList<String> list2 = new JList<>(chat);
 	String exit = ".";
+	LocalTime t;
+	String time;
 
 	public void AddUsers(String user) {
 		users.addElement(user);
@@ -36,8 +38,8 @@ public class UI implements ActionListener {
 	}
 
 	public void AddChat(String user, String message) {
-		LocalTime t = LocalTime.now();
-		String time = t.toString();
+		t = LocalTime.now();
+		time = t.toString();
 		chat.addElement(time.substring(0, 5) + "      " + user + ":  " + message);
 		list2.setBounds(150, 75, 1000, 400);
 	}
@@ -100,12 +102,20 @@ public class UI implements ActionListener {
 		if (e.getSource() == send) {
 			if ((str.compareTo(exit)) == 0) {
 				(frame).dispose();
-				message.setMsgType(3);
+				message.setMsgType(6);
 				message.setMsg();
+				try {
+					outToServer.writeObject(message);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				System.out.println("From server: " + message.getMsg());
 			} else {
 				AddChat(naam, str);
 				try {
 					run();
+					printMsg();
 				} catch (ClassNotFoundException | IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -140,29 +150,28 @@ public class UI implements ActionListener {
 
 	}
 
+	public void printMsg() throws ClassNotFoundException, IOException {
+		message = (Message) inFromServer.readObject();
+		if (message.getMsgType() == 2) {
+			chat.addElement(time.substring(0, 5) + "      " + message.getUserName() + ":  " + message.getMsg());
+			outToServer.writeObject(message);
+			message.setMsgType(-2);
+			message.setMsg();
+		}
+	}
+
 	public void run() throws IOException, ClassNotFoundException {
-		outToServer.reset(); 
+		outToServer.reset();
 		message = (Message) inFromServer.readObject();
 		if (str != null) {
 			message.setMsg(str);
 			message.setMsgType(4);
 			message.setMsg();
 			outToServer.writeObject(message);
-			message.setMsgType(2);
-			message.setMsg();
-			outToServer.writeObject(message);
+			// message.setMsgType(2);
+			// message.setMsg();
+			// outToServer.writeObject(message);
 
-		}
-		if (message.getMsgType() == 2) {
-			System.out.println(message.getMsg());
-			outToServer.writeObject(message);
-			message.setMsgType(-2);
-			message.setMsg();
-		} else if (message.getMsgType() == 3 || message.getMsgType() == 0) {
-			message.setMsgType(6);
-			message.setMsg();
-			outToServer.writeObject(message);
-			System.out.println("From server: " + message.getMsg());
 		}
 	}
 
