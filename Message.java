@@ -66,6 +66,6 @@ class Message implements Comparable<Message>, Serializable{
 	//make sure this is done correctly so it brings the highest to the top 
 	@Override
 	public int compareTo(Message other){
-		return other.msgType - this.msgType;  
+		return Math.max(other.msgType,this.msgType);  
 	}
 } 

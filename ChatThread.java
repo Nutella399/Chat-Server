@@ -46,7 +46,7 @@ class ChatThread implements Runnable{
 								socket.close();
 								break; 
 							}catch(IOException e) {
-								System.out.println(e);
+								System.out.println(e + "Yes");
 							}
 						}else {
 							current.sendMessage(3, polledMessage.getMsg()); 

@@ -110,6 +110,7 @@ public class UI implements ActionListener, Runnable {
 				message.setMsg();
 				try {
 					outToServer.writeObject(message);
+					clientSocket.close();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
